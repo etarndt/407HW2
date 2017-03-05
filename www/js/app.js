@@ -25,12 +25,14 @@ var starter = angular.module('starter', ['ionic', 'ngCordova'])
 
 // The start of the single controller that we will be using for this lab
 // It is called "mainCtrl" and is connected to the Angular module "starter"
-starter.controller('mainCtrl', function($scope, $ionicModal, $ionicLoading) {
+starter.controller('mainCtrl', function($scope, $ionicModal, $ionicLoading, $window) {
   $scope.firstName = ""; // Create first name string variable on controller $scope
   $scope.lastName = ""; // Create last name string variable on controller $scope
   $scope.phoneNumber = ""; // Create phone number string variable on controller $scope
   $scope.email = ""; // Create email string variable on controller $scope
   $scope.listOfPeople = {}; // Create list of people dictionary variable on controller $scope
+
+  $scope.listOfPeople = JSON.parse($window.localStorage.getItem(0));
 
   $scope.onSubmit = function () { // Create onSubmit function
     // This function will be run every time the submit button is pressed
@@ -53,10 +55,14 @@ starter.controller('mainCtrl', function($scope, $ionicModal, $ionicLoading) {
     // Now, add the person variable you added attributes to above to the "listOfPeople" dictionary
     /* HINT: Use the person variables ID as the "key" value to the dictionary */
     /* YOUR CODE HERE; 1 line */
+
     $scope.listOfPeople[person.id] = person;
+    $window.localStorage.setItem(0,JSON.stringify($scope.listOfPeople));
+
     // This function call displays a popover that says "Person Added!"
     // It is run every time someone presses the submit button and the onSubmit function runs, as it is nested within the
     // onSubmit function
+
     $ionicLoading.show({ template: 'Person Added!', noBackdrop: true, duration: 1000 });
   };
 
@@ -65,7 +71,11 @@ starter.controller('mainCtrl', function($scope, $ionicModal, $ionicLoading) {
     // What the code is supposed to do is delete a "person" variable from the "listOfPeople" dictionary
     // This needs to be done using a unique identifier for each "person" variable
     /* Insert your code to delete a person variable from the dictionary "listOfPeople" */
+    //$window.localStorage.removeItem(person.id);
+
     delete $scope.listOfPeople[/* YOUR CODE HERE*/person.id];
+
+      $window.localStorage.setItem(0,JSON.stringify($scope.listOfPeople));
 
     // This function call displays a popover that says "Person Deleted!"
     // It is run every time someone clicks/presses a person in the list of people and the deletePerson
