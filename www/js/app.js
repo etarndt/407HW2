@@ -32,7 +32,11 @@ starter.controller('mainCtrl', function($scope, $ionicModal, $ionicLoading, $win
   $scope.email = ""; // Create email string variable on controller $scope
   $scope.listOfPeople = {}; // Create list of people dictionary variable on controller $scope
 
-  $scope.listOfPeople = JSON.parse($window.localStorage.getItem(0));
+  $scope.storedDictionary = JSON.parse($window.localStorage.getItem(0));
+
+  if ($scope.storedDictionary != null) {
+      $scope.listOfPeople = $scope.storedDictionary;
+  }
 
   $scope.onSubmit = function () { // Create onSubmit function
     // This function will be run every time the submit button is pressed
@@ -55,6 +59,7 @@ starter.controller('mainCtrl', function($scope, $ionicModal, $ionicLoading, $win
     // Now, add the person variable you added attributes to above to the "listOfPeople" dictionary
     /* HINT: Use the person variables ID as the "key" value to the dictionary */
     /* YOUR CODE HERE; 1 line */
+
 
     $scope.listOfPeople[person.id] = person;
     $window.localStorage.setItem(0,JSON.stringify($scope.listOfPeople));
